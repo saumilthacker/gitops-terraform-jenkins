@@ -228,7 +228,7 @@ echo ""
 $MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
 EOF
 sleep 30 
-$MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
+./$MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
 EOF
 echo ""
 echo "+-------------------------------------------------------------------+"
