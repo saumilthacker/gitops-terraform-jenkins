@@ -29,7 +29,7 @@ esac
 # fi
 # eval set -- "$args"
 #Initialise the variable for further use
-VERSION=$1
+VERSION="7.3"
 # JUMP_CLOUD_USER=""
 # JUMP_CLOUD_PASSWORD=""
 HOSTNAME=`hostname`
@@ -96,7 +96,7 @@ HOSTNAME=`hostname`
 #           ;;
 #     esac
 # done
-echo $HOSTNAME
+echo ""
 echo "+-------------------------------------------------------------------+"
 echo -e "\tStopping Firewall Service"
 echo "+-------------------------------------------------------------------+"
@@ -196,7 +196,7 @@ echo "+-------------------------------------------------------------------+"
 echo -e "\tExecuting install_percona_nodes.sh"
 echo "+-------------------------------------------------------------------+"
 echo ""
-sudo bash install_percona_nodes.sh -p -i $HOSTNAME
+bash install_percona_nodes.sh -p -i $HOSTNAME
 echo ""
 echo "+-------------------------------------------------------------------+"
 echo -e "\tSetting SELinux permission to disable"
