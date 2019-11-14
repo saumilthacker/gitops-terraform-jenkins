@@ -32,7 +32,7 @@ esac
 VERSION=$1
 # JUMP_CLOUD_USER=""
 # JUMP_CLOUD_PASSWORD=""
-HOSTNAME="test"
+HOSTNAME=`hostname`
 # #
 # # Process cmd-line switches
 # #
