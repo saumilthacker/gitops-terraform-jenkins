@@ -31,12 +31,7 @@ resource "aws_instance" "default" {
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
   source_dest_check      = false
   instance_type          = "${var.instance_type}"
-  user_data = << EOF
-#!/bin/bash
-sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
-yes | cp /home/centos/.ssh/authorized_keys /root/.ssh/authorized_keys
-sudo service sshd restart
-	EOF
+  user_data = "${file("permit_root.sh")}"
 
   tags {
     Name = "terraform-default"
