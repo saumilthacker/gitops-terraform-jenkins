@@ -82,7 +82,7 @@ resource "null_resource" "Script_provisioner" {
     agent = false
   }
   provisioner "local-exec" {
-    command = "sleep 40"
+    command = "sleep 240"
   }
 provisioner "file" {
     source      = "test.sh"
