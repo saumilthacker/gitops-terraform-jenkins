@@ -26,7 +26,7 @@ try {
       ]]) {
         ansiColor('xterm') {
           sh 'terraform init'
-          sh 'terraform destroy -auto-approve'
+          sh "terraform destroy -var='build_number=${env.Build_Number}' -auto-approve"
         }
       }
     }
