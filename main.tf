@@ -62,7 +62,7 @@ resource "aws_security_group" "default" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
   }
-resource "null_resource" "example_provisioner" {
+resource "null_resource" "Script_provisioner" {
   triggers {
     public_ip = "${aws_instance.default.public_ip}"
   }
