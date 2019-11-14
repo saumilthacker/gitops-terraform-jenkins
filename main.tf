@@ -70,7 +70,7 @@ resource "aws_security_group" "default" {
   }
 resource "null_resource" "Script_provisioner" {
   triggers {
-    public_ip = "${aws_instance.default.}"
+    public_ip = "${aws_instance.default.public_ip}"
   }
 
   connection {
