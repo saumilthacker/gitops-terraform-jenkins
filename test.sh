@@ -29,7 +29,7 @@ esac
 # fi
 # eval set -- "$args"
 #Initialise the variable for further use
-VERSION="7.3"
+VERSION=$1
 # JUMP_CLOUD_USER=""
 # JUMP_CLOUD_PASSWORD=""
 HOSTNAME=`hostname`
