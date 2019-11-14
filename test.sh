@@ -96,7 +96,7 @@ HOSTNAME=`hostname`
 #           ;;
 #     esac
 # done
-echo ""
+echo $HOSTNAME
 echo "+-------------------------------------------------------------------+"
 echo -e "\tStopping Firewall Service"
 echo "+-------------------------------------------------------------------+"
@@ -196,7 +196,7 @@ echo "+-------------------------------------------------------------------+"
 echo -e "\tExecuting install_percona_nodes.sh"
 echo "+-------------------------------------------------------------------+"
 echo ""
-bash install_percona_nodes.sh -p -i $HOSTNAME
+sudo bash install_percona_nodes.sh -p -i $HOSTNAME
 echo ""
 echo "+-------------------------------------------------------------------+"
 echo -e "\tSetting SELinux permission to disable"
