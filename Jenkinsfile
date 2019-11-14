@@ -25,6 +25,7 @@ try {
         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
       ]]) {
         ansiColor('xterm') {
+          sh 'terraform destroy -auto-approve'
           sh 'terraform init'
         }
       }
