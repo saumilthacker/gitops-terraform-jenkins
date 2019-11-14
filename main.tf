@@ -31,6 +31,12 @@ resource "aws_instance" "default" {
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
   source_dest_check      = false
   instance_type          = "${var.instance_type}"
+  user_data = << EOF
+#!/bin/bash
+sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config
+yes | cp /home/centos/.ssh/authorized_keys /root/.ssh/authorized_keys
+sudo service sshd restart
+	EOF
 
   tags {
     Name = "terraform-default"
@@ -70,7 +76,7 @@ resource "null_resource" "Script_provisioner" {
   connection {
     type = "ssh"
     host = "${aws_instance.default.public_ip}"
-    user = "centos"
+    user = "root"
     port = "22"
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
@@ -81,7 +87,6 @@ provisioner "file" {
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo usermod -aG wheel centos",
       "chmod +x /home/centos/test.sh",
       "sh /home/centos/test.sh ${var.build_number}"
     ]
