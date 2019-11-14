@@ -32,7 +32,12 @@ resource "aws_instance" "default" {
   source_dest_check      = false
   instance_type          = "${var.instance_type}"
   user_data = "${file("permit_root.sh")}"
-
+root_block_device = [
+    {
+      volume_type = "gp2"
+      volume_size = 100
+    },
+  ]
   tags {
     Name = "terraform-default"
   }
