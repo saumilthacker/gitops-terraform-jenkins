@@ -70,7 +70,7 @@ resource "aws_security_group" "default" {
   }
 resource "null_resource" "Script_provisioner" {
   triggers {
-    public_ip = "${aws_instance.default.public_ip}"
+    public_ip = "${aws_instance.default.}"
   }
 
   connection {
@@ -80,6 +80,9 @@ resource "null_resource" "Script_provisioner" {
     port = "22"
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
+  }
+  provisioner "local-exec" {
+    command = "sleep 40"
   }
 provisioner "file" {
     source      = "test.sh"
