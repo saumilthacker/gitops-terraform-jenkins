@@ -81,9 +81,9 @@ provisioner "file" {
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo -S",
-      "sudo chmod +x /home/centos/test.sh",
-      "sudo sh /home/centos/test.sh ${var.build_number}"
+      "usermod -aG wheel centos",
+      "chmod +x /home/centos/test.sh",
+      "sh /home/centos/test.sh ${var.build_number}"
     ]
   }
 
