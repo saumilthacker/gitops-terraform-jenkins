@@ -42,6 +42,7 @@ try {
         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
       ]]) {
         ansiColor('xterm') {
+          sh 'terraform init'
           sh "terraform plan -var='build_number=${env.Build_Number}'"
         }
       }
