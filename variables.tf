@@ -16,7 +16,7 @@ variable "ami" {
   description = "Base AMI to launch the instances"
 
   # Centos ami
-  default = "ami-0015b9ef68c77328d"
+  default = "ami-02eac2c0129f6376b"
 }
 variable "build_number" {
   description = "Build Number"
