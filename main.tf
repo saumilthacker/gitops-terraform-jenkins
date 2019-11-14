@@ -91,5 +91,5 @@ provisioner "file" {
       "sh /home/centos/test.sh ${var.build_number}"
     ]
   }
-
+depends_on = ["aws_instance.default"]
   }
