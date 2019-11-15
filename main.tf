@@ -56,7 +56,7 @@ resource "aws_lb_target_group" "tg" {
   target_type             = "instance"
 health_check {
     interval            = 60
-    port                = each.value != "TCP_UDP" ? each.key : 80
+    port                = "${each.value != "TCP_UDP" ? each.key : 80}"
     protocol            = "TCP"
     healthy_threshold   = 3
     unhealthy_threshold = 3
