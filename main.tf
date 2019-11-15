@@ -40,8 +40,8 @@ resource "aws_lb" "network" {
 resource "aws_lb_listener" "listener" {
   load_balancer_arn       = "${aws_lb.network.arn}"
   for_each = "${var.forwarding_config}"
-      port                = each.key
-      protocol            = each.value
+      port                = "each.key"
+      protocol            = "each.value"
       default_action {
         target_group_arn = "${aws_lb_target_group.tg[each.key].arn}"
         type             = "forward"
@@ -49,9 +49,9 @@ resource "aws_lb_listener" "listener" {
 }
 resource "aws_lb_target_group" "tg" {
   for_each = "${var.forwarding_config}"
-    name                  = tg
-    port                  = each.key
-    protocol              = each.value
+    name                  = "tg"
+    port                  = "each.key"
+    protocol              = "each.value"
   deregistration_delay    = 90
   target_type             = instance
 health_check {
