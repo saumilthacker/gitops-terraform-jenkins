@@ -81,12 +81,12 @@ resource "aws_security_group" "default" {
   }
 resource "null_resource" "Script_provisioner" {
   triggers {
-    public_ip = "${aws_instance.default.public_ip}"
+    public_ip = "${aws_eip.default1.public_ip}"
   }
 
   connection {
     type = "ssh"
-    host = "${aws_instance.default.public_ip}"
+    host = "${aws_eip.default1.public_ip}"
     user = "root"
     port = "22"
     private_key = "${tls_private_key.jenkins.private_key_pem}"
