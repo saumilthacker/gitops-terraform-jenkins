@@ -148,3 +148,4 @@ provisioner "file" {
   }
 depends_on = ["aws_instance.default"]
   }
+  }
