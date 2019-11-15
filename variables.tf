@@ -21,5 +21,3 @@ variable "ami" {
 variable "build_number" {
   description = "Build Number"
 }
-variable "forwarding_config" {
-}
