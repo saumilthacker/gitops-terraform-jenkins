@@ -82,7 +82,7 @@ root_block_device = [
   tags {
     Name = "terraform-default"
   }
-  depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
+  depends_on = ["aws_instance.default", "aws_key_pair.generated_key","aws_vpc.vpc"] 
 }
 
 # Create Security Group for EC2
