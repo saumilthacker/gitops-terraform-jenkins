@@ -27,6 +27,17 @@ resource "aws_eip" "default1" {
   instance = "${aws_instance.default.id}"
   vpc      = true
 }
+# Create Network lb
+resource "aws_lb" "network" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "network"
+}
+# Associate eip with network lb
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = "${aws_instance.default.id}"
+  allocation_id = "${aws_lb.network.id}"
+}
 
 # Create EC2 instance
 resource "aws_instance" "default" {
