@@ -241,6 +241,21 @@ echo "+-------------------------------------------------------------------+"
 echo -e "\tExdecuting Validation Script"
 echo "+-------------------------------------------------------------------+"
 echo ""
-#$MOOGSOFT_HOME/bin/utils/moog_install_validator.sh
-#$MOOGSOFT_HOME/bin/utils/moog_db_validator.sh 
-#$MOOGSOFT_HOME/bin/utils/tomcat_install_validator.sh 
+$MOOGSOFT_HOME/bin/utils/moog_install_validator.sh
+$MOOGSOFT_HOME/bin/utils/moog_db_validator.sh 
+$MOOGSOFT_HOME/bin/utils/tomcat_install_validator.sh
+echo ""
+echo "+-------------------------------------------------------------------+"
+echo -e "\Starting moogfarmd"
+echo "+-------------------------------------------------------------------+"
+systemctl start moogfarmd
+echo ""
+echo ""
+echo "+-------------------------------------------------------------------+"
+echo -e "\Status of required services"
+echo "+-------------------------------------------------------------------+"
+echo ""
+systemctl status moogfarmd
+systemctl status apache-tomcat
+systemctl status rabbitmq-server
+systemctl status mysqld
