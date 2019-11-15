@@ -22,6 +22,11 @@ resource "aws_key_pair" "generated_key" {
   public_key = "${tls_private_key.jenkins.public_key_openssh}"
     depends_on = ["tls_private_key.jenkins"]
 }
+# Create elastic-ip
+resource "aws_eip" "default1" {
+  instance = "${aws_instance.default.id}"
+  vpc      = true
+}
 
 # Create EC2 instance
 resource "aws_instance" "default" {
