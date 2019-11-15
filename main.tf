@@ -26,6 +26,7 @@ resource "aws_key_pair" "generated_key" {
 resource "aws_eip" "default1" {
   instance = "${aws_instance.default.id}"
   vpc      = true
+  }
 # Network lb
 resource "aws_lb" "network" {
   name               = "example"
@@ -66,7 +67,7 @@ health_check {
 resource "aws_lb_target_group_attachment" "tga1" {
   for_each = "${var.forwarding_config}"
     target_group_arn  = "${aws_lb_target_group.tg[each.key].arn}"
-    port = "eack.key"
+    port = "each.key"
   }
 
 
