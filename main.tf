@@ -66,7 +66,8 @@ health_check {
 resource "aws_lb_target_group_attachment" "tga1" {
   for_each = "${var.forwarding_config}"
     target_group_arn  = "${aws_lb_target_group.tg[each.key].arn}"
-    port
+    port = "eack.key"
+  }
 
 
 # Create EC2 instance
@@ -147,5 +148,6 @@ provisioner "file" {
     ]
   }
 depends_on = ["aws_instance.default"]
+  }
   
  
