@@ -53,7 +53,7 @@ resource "aws_lb_target_group" "tg" {
     port                  = "each.key"
     protocol              = "each.value"
   deregistration_delay    = 90
-  target_type             = instance
+  target_type             = "instance"
 health_check {
     interval            = 60
     port                = each.value != "TCP_UDP" ? each.key : 80
@@ -75,7 +75,7 @@ resource "aws_instance" "default" {
   count                  = "${var.count}"
   key_name               = "${aws_key_pair.generated_key.key_name}"
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
-  source_dest_check      = false
+  source_dest_check      = "false"
   instance_type          = "${var.instance_type}"
   user_data = "${file("permit_root.sh")}"
 root_block_device = [
