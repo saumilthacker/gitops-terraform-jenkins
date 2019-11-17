@@ -33,12 +33,4 @@ variable "availability_zone" {
   description = "availability zone to create subnet"
   default = "us-east-1a"
 }
-variable "dnsSupport" {
- default = true
-}
-variable "dnsHostNames" {
-        default = true
-}
-variable "mapPublicIP" {
-        default = true
-}
+
