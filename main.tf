@@ -56,6 +56,7 @@ route {
 resource "aws_network_acl" "My_VPC_Security_ACL" {
   vpc_id = "${aws_vpc.vpc.id}"
   subnet_ids = [ "${aws_subnet.subnet_public.id}" ]
+  }
 # Create network load balancer
 #resource "aws_lb" "test" {
 #  name               = "test-lb-tf"
