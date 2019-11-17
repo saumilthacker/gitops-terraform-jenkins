@@ -59,7 +59,6 @@ resource "aws_lb" "test" {
   load_balancer_type = "network"
   subnet_mapping {
     subnet_id     = "${aws_subnet.subnet_public.id}"
-    allocation_id = "${aws_instance.default.id}"
   }
   }
 
@@ -129,7 +128,7 @@ resource "null_resource" "Script_provisioner" {
     agent = false
   }
   provisioner "local-exec" {
-    command = "sleep 240"
+    command = "sleep 100"
   }
 provisioner "file" {
     source      = "test.sh"
