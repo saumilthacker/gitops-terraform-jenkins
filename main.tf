@@ -59,7 +59,7 @@ resource "aws_lb" "test" {
   load_balancer_type = "network"
   subnet_mapping {
     subnet_id     = "${aws_subnet.subnet_public.id}"
-    allocation_id = "${aws_eip.default1.id}"
+    allocation_id = "${aws_instance.default.id}"
   }
   }
 
