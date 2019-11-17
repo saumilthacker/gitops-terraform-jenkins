@@ -23,13 +23,22 @@ variable "build_number" {
 }
 variable "cidr_vpc" {
   description = "CIDR block for the VPC"
-  default = "172.31.0.0/16"
+  default = "10.0.0.0/16"
 }
 variable "cidr_subnet" {
   description = "CIDR block for the subnet"
-  default = "172.31.32.0/20"
+  default = "10.0.1.0/24"
 }
 variable "availability_zone" {
   description = "availability zone to create subnet"
   default = "us-east-1a"
+}
+variable "dnsSupport" {
+ default = true
+}
+variable "dnsHostNames" {
+        default = true
+}
+variable "mapPublicIP" {
+        default = true
 }
