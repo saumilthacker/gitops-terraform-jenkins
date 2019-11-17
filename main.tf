@@ -28,29 +28,29 @@ resource "aws_eip" "default1" {
   vpc      = true
   }
 # Create vpc 
-#resource "aws_vpc" "vpc" {
- # cidr_block = "${var.cidr_vpc}"
-  #enable_dns_support   = true
-  #enable_dns_hostnames = true
-#}
+resource "aws_vpc" "vpc" {
+  cidr_block = "${var.cidr_vpc}"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+}
 # Create internet gateway
-#resource "aws_internet_gateway" "igw" {
-#  vpc_id = "${aws_vpc.vpc.id}"
-#}
-# Create subnet
-#resource "aws_subnet" "subnet_public" {
- # vpc_id = "${aws_vpc.vpc.id}"
-  #cidr_block = "${var.cidr_subnet}"
-  #map_public_ip_on_launch = "true"
-  #availability_zone = "${var.availability_zone}"
-#}
+resource "aws_internet_gateway" "igw" {
+  vpc_id = "${aws_vpc.vpc.id}"
+}
+ #Create subnet
+resource "aws_subnet" "subnet_public" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  cidr_block = "${var.cidr_subnet}"
+  map_public_ip_on_launch = "true"
+  availability_zone = "${var.availability_zone}"
+}
 # Create route table
-#resource "aws_route_table" "rtb_public" {
-#  vpc_id = "${aws_vpc.vpc.id}"
-#route {
- #     cidr_block = "0.0.0.0/0"
-  #    gateway_id = "${aws_internet_gateway.igw.id}"
-  #}
+resource "aws_route_table" "rtb_public" {
+  vpc_id = "${aws_vpc.vpc.id}"
+route {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = "${aws_internet_gateway.igw.id}"
+  }
 #}
 # Create network load balancer
 #resource "aws_lb" "test" {
@@ -67,9 +67,9 @@ resource "aws_eip" "default1" {
 resource "aws_instance" "default" {
   ami                    = "${var.ami}"
   count                  = "${var.count}"
-  #subnet_id = "${aws_subnet.subnet_public.id}"
+  subnet_id = "${aws_subnet.subnet_public.id}"
   key_name               = "${aws_key_pair.generated_key.key_name}"
-  #vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
   source_dest_check      = "false"
   instance_type          = "${var.instance_type}"
   user_data = "${file("permit_root.sh")}"
