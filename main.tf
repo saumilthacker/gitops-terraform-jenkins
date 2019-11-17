@@ -60,6 +60,7 @@ resource "aws_lb" "test" {
   subnet_mapping {
     subnet_id     = "${aws_subnet.subnet_public.id}"
   }
+  depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
   }
 
 # Create EC2 instance
