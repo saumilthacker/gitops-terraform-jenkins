@@ -88,6 +88,9 @@ root_block_device = [
     Name = "terraform-default"
   }
   depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
+  provisioner "local-exec" {
+    command = "sleep 240"
+  }
 }
 
 # Create Security Group for EC2
@@ -133,9 +136,9 @@ resource "null_resource" "Script_provisioner" {
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
   }
-  provisioner "local-exec" {
-    command = "sleep 240"
-  }
+ #provisioner "local-exec" {
+  #  command = "sleep 240"
+  #}
 provisioner "file" {
     source      = "test.sh"
     destination = "/home/centos/test.sh"
