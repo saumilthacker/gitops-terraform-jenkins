@@ -37,7 +37,7 @@ resource "aws_vpc" "vpc" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 }
- #Create subnet
+# Create subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id = "${aws_vpc.vpc.id}"
   cidr_block = "${var.cidr_subnet}"
@@ -52,17 +52,16 @@ route {
       gateway_id = "${aws_internet_gateway.igw.id}"
   }
 }
-
 # Create network load balancer
 #resource "aws_lb" "test" {
 #  name               = "test-lb-tf"
- # internal           = false
- # load_balancer_type = "network"
- # subnet_mapping {
- #   subnet_id     = "${aws_subnet.subnet_public.id}"
- # }
- # depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
- # }
+#  internal           = false
+#  load_balancer_type = "network"
+#  subnet_mapping {
+#    subnet_id     = "${aws_subnet.subnet_public.id}"
+#  }
+#  depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
+#  }
 
 # Create EC2 instance
 resource "aws_instance" "default" {
@@ -83,7 +82,7 @@ root_block_device = [
   tags {
     Name = "terraform-default"
   }
-  depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
+  depends_on = ["aws_instance.default", "aws_key_pair.generated_key","aws_vpc.vpc"] 
 }
 
 # Create Security Group for EC2
@@ -115,13 +114,12 @@ resource "aws_security_group" "default" {
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
   }
-  depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
-  
   }
 resource "null_resource" "Script_provisioner" {
   triggers {
     public_ip = "${aws_eip.default1.public_ip}"
   }
+
   connection {
     type = "ssh"
     host = "${aws_eip.default1.public_ip}"
@@ -130,8 +128,8 @@ resource "null_resource" "Script_provisioner" {
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
   }
- provisioner "local-exec" {
-    command = "sleep 240"
+  provisioner "local-exec" {
+    command = "sleep 250"
   }
 provisioner "file" {
     source      = "test.sh"
@@ -143,5 +141,5 @@ provisioner "file" {
       "sh /home/centos/test.sh ${var.build_number}"
     ]
   }
-depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
+depends_on = ["aws_instance.default"]
   }
