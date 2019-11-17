@@ -119,13 +119,14 @@ resource "aws_security_group" "default" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
   depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
-  provisioner "local-exec" {
-    command = "sleep 240"
-  }
+  
   }
 resource "null_resource" "Script_provisioner" {
   triggers {
     public_ip = "${aws_eip.default1.public_ip}"
+  }
+  rovisioner "local-exec" {
+    command = "sleep 240"
   }
 
   connection {
