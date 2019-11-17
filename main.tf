@@ -52,11 +52,7 @@ route {
       gateway_id = "${aws_internet_gateway.igw.id}"
   }
 }
-# create VPC Network access control list
-resource "aws_network_acl" "My_VPC_Security_ACL" {
-  vpc_id = "${aws_vpc.vpc.id}"
-  subnet_ids = [ "${aws_subnet.subnet_public.id}" ]
-  }
+
 # Create network load balancer
 #resource "aws_lb" "test" {
 #  name               = "test-lb-tf"
@@ -121,6 +117,10 @@ resource "aws_security_group" "default" {
     to_port         = 0
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
+  }
+  depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
+  provisioner "local-exec" {
+    command = "sleep 240"
   }
   }
 resource "null_resource" "Script_provisioner" {
