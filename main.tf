@@ -141,5 +141,5 @@ provisioner "file" {
       "sh /home/centos/test.sh ${var.build_number}"
     ]
   }
-depends_on = ["aws_instance.default"]
+depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
   }
