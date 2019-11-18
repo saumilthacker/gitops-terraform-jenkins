@@ -58,6 +58,11 @@ resource "aws_route_table_association" "associate_to_subnet" {
   route_table_id = "${aws_route_table.rtb_public.id}"
 }
 
+data "aws_acm_certificate" "fetch_certificate_arn" {
+  domain   = "www.moogsoft.me"
+  statuses = ["ISSUED"]
+  most_recent = true
+  }
 
 # Create network load balancer
 resource "aws_lb" "test" {
@@ -69,6 +74,27 @@ resource "aws_lb" "test" {
   }
   depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
   }
+#CREATING A TARGET GROUP FOR LOAD BALANCER.
+resource "aws_lb_target_group" "test" {
+  name     = "aws_target_group"
+  port     = 443
+  protocol = "tls"
+  vpc_id   = "${aws_vpc.vpc.id}"
+}
+#ATTACHING THE PRIVATE HOSTS TO LOAD BALANCER'S TARGET GROUP.
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = "${aws_lb_target_group.test.arn}"
+  target_id        = "${aws_instance.default.id}"
+  port             = 443
+}
+#Attaching listner
+resource "aws_lb_listener" "front_end" {
+  load_balancer_arn = "${aws_lb.test.arn}"
+  port              = "443"
+  protocol          = "tls"
+  certificate_arn   = ${data.aws_acm_certificate.fetch_certificate_arn.arn}"
+  
+}
 
 # Create EC2 instance
 resource "aws_instance" "default" {
