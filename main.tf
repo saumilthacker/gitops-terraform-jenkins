@@ -95,7 +95,7 @@ resource "aws_lb_listener" "front_end" {
   certificate_arn   = "${data.aws_acm_certificate.fetch_certificate_arn.arn}"
   default_action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.front_end.arn}"
+    target_group_arn = "${aws_lb_target_group.test.arn}"
   }
   
 }
