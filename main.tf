@@ -129,6 +129,7 @@ resource "null_resource" "Script_provisioner" {
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
   }
+  depends_on = ["tls_private_key.jenkins"]
   provisioner "local-exec" {
     command = "sleep 250"
   }
