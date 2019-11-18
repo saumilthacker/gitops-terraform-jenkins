@@ -228,8 +228,6 @@ echo ""
 $MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
 EOF
 sleep 90
-./$MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
-EOF
 echo ""
 echo "+-------------------------------------------------------------------+"
 echo -e "\tInserting Dev License"
