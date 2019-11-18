@@ -20,7 +20,6 @@ resource "tls_private_key" "jenkins" {
 resource "aws_key_pair" "generated_key" {
   key_name   = "Jenkins-default"
   public_key = "${tls_private_key.jenkins.public_key_openssh}"
-    depends_on = ["tls_private_key.jenkins"]
 }
 # Create elastic-ip
 resource "aws_eip" "default1" {
@@ -53,6 +52,13 @@ route {
       gateway_id = "${aws_internet_gateway.igw.id}"
   }
 }
+
+resource "aws_route_table_association" "associate_to_subnet" {
+  subnet_id      = "${aws_subnet.subnet_public.id}"
+  route_table_id = "${aws_route_table.rtb_public.id}"
+}
+
+
 # Create network load balancer
 resource "aws_lb" "test" {
   name               = "test-lb-tf"
