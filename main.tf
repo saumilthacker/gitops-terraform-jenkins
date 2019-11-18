@@ -76,7 +76,7 @@ resource "aws_lb" "test" {
   }
 #CREATING A TARGET GROUP FOR LOAD BALANCER.
 resource "aws_lb_target_group" "test" {
-  name     = "aws_target_group"
+  name     = "aws-targetgroup"
   port     = 443
   protocol = "tls"
   vpc_id   = "${aws_vpc.vpc.id}"
@@ -93,6 +93,10 @@ resource "aws_lb_listener" "front_end" {
   port              = "443"
   protocol          = "tls"
   certificate_arn   = "${data.aws_acm_certificate.fetch_certificate_arn.arn}"
+  default_action {
+    type             = "forward"
+    target_group_arn = "${aws_lb_target_group.front_end.arn}"
+  }
   
 }
 
