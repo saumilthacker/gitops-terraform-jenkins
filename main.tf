@@ -33,16 +33,17 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 }
-# Create internet gateway
-#resource "aws_internet_gateway" "igw" {
- # vpc_id = "${aws_vpc.vpc.id}"
-#}
+
 # Create subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id = "${aws_vpc.vpc.id}"
   cidr_block = "${var.cidr_subnet}"
   map_public_ip_on_launch = "true"
   availability_zone = "${var.availability_zone}"
+}
+#Create internet gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = "${aws_vpc.vpc.id}"
 }
 # Create route table
 #resource "aws_route_table" "rtb_public" {
