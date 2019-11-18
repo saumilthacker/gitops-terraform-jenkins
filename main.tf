@@ -34,9 +34,9 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 }
 # Create internet gateway
-resource "aws_internet_gateway" "igw" {
-  vpc_id = "${aws_vpc.vpc.id}"
-}
+#resource "aws_internet_gateway" "igw" {
+ # vpc_id = "${aws_vpc.vpc.id}"
+#}
 # Create subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -45,13 +45,13 @@ resource "aws_subnet" "subnet_public" {
   availability_zone = "${var.availability_zone}"
 }
 # Create route table
-resource "aws_route_table" "rtb_public" {
-  vpc_id = "${aws_vpc.vpc.id}"
-route {
-      cidr_block = "0.0.0.0/0"
-      gateway_id = "${aws_internet_gateway.igw.id}"
-  }
-}
+#resource "aws_route_table" "rtb_public" {
+ # vpc_id = "${aws_vpc.vpc.id}"
+#route {
+  #    cidr_block = "0.0.0.0/0"
+   #   gateway_id = "${aws_internet_gateway.igw.id}"
+  #}
+#}
 # Create network load balancer
 #resource "aws_lb" "test" {
 #  name               = "test-lb-tf"
