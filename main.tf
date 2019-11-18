@@ -78,7 +78,8 @@ resource "aws_lb" "test" {
 resource "aws_lb_target_group" "test" {
   name     = "aws-targetgroup"
   port     = 443
-  protocol = "tls"
+  protocol = "TLS"
+  target_type = "instance"
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 #ATTACHING THE PRIVATE HOSTS TO LOAD BALANCER'S TARGET GROUP.
@@ -91,7 +92,7 @@ resource "aws_lb_target_group_attachment" "test" {
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = "${aws_lb.test.arn}"
   port              = "443"
-  protocol          = "tls"
+  protocol          = "TLS"
   certificate_arn   = "${data.aws_acm_certificate.fetch_certificate_arn.arn}"
   default_action {
     type             = "forward"
