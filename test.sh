@@ -227,8 +227,7 @@ echo ""
 # sed -i 's|MY_HOSTNAME=$(hostname)|MY_HOSTNAME='$HOSTNAME'|' $MOOGSOFT_HOME/bin/utils/moog_init_functions.sh
 $MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
 EOF
-sleep 30 
-./$MOOGSOFT_HOME/bin/utils/moog_init.sh -qI MoogsoftAIOps -u root --accept-eula <<-EOF
+sleep 90
 EOF
 echo ""
 echo "+-------------------------------------------------------------------+"
