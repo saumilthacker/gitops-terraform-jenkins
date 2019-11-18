@@ -28,31 +28,30 @@ resource "aws_eip" "default1" {
   vpc      = true
   }
 # Create vpc 
-#resource "aws_vpc" "vpc" {
- # cidr_block = "${var.cidr_vpc}"
-  #enable_dns_support   = true
-  #enable_dns_hostnames = true
-#}
-
+resource "aws_vpc" "vpc" {
+  cidr_block = "${var.cidr_vpc}"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+}
+# Create internet gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = "${aws_vpc.vpc.id}"
+}
 # Create subnet
-#resource "aws_subnet" "subnet_public" {
- # vpc_id = "${aws_vpc.vpc.id}"
-  #cidr_block = "${var.cidr_subnet}"
-  #map_public_ip_on_launch = "true"
-  #availability_zone = "${var.availability_zone}"
-#}
-#Create internet gateway
-#resource "aws_internet_gateway" "igw" {
- # vpc_id = "${aws_vpc.vpc.id}"
-#}
+resource "aws_subnet" "subnet_public" {
+  vpc_id = "${aws_vpc.vpc.id}"
+  cidr_block = "${var.cidr_subnet}"
+  map_public_ip_on_launch = "true"
+  availability_zone = "${var.availability_zone}"
+}
 # Create route table
-#resource "aws_route_table" "rtb_public" {
- # vpc_id = "${aws_vpc.vpc.id}"
-#route {
-  #    cidr_block = "0.0.0.0/0"
-   #   gateway_id = "${aws_internet_gateway.igw.id}"
-  #}
-#}
+resource "aws_route_table" "rtb_public" {
+  vpc_id = "${aws_vpc.vpc.id}"
+route {
+      cidr_block = "0.0.0.0/0"
+      gateway_id = "${aws_internet_gateway.igw.id}"
+  }
+}
 # Create network load balancer
 #resource "aws_lb" "test" {
 #  name               = "test-lb-tf"
@@ -68,12 +67,12 @@ resource "aws_eip" "default1" {
 resource "aws_instance" "default" {
   ami                    = "${var.ami}"
   count                  = "${var.count}"
-  #subnet_id = "${aws_subnet.subnet_public.id}"
+  subnet_id = "${aws_subnet.subnet_public.id}"
   key_name               = "${aws_key_pair.generated_key.key_name}"
-  #vpc_security_group_ids = ["${aws_security_group.default.id}"]
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
   source_dest_check      = "false"
   instance_type          = "${var.instance_type}"
-  user_data = "${file("permit_root.sh")}"
+  user_data = "${file("test.sh")}"
 root_block_device = [
     {
       volume_type = "gp2"
@@ -83,13 +82,13 @@ root_block_device = [
   tags {
     Name = "terraform-default"
   }
-  depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
+  depends_on = ["aws_instance.default", "aws_key_pair.generated_key","aws_vpc.vpc"] 
 }
 
 # Create Security Group for EC2
 resource "aws_security_group" "default" {
   name = "terraform-default-sg"
-  #vpc_id = "${aws_vpc.vpc.id}"
+  vpc_id = "${aws_vpc.vpc.id}"
   ingress {
     from_port   = 80
     to_port     = 80
@@ -115,33 +114,4 @@ resource "aws_security_group" "default" {
     protocol        = "-1"
     cidr_blocks     = ["0.0.0.0/0"]
   }
-  }
-resource "null_resource" "Script_provisioner" {
-  triggers {
-    public_ip = "${aws_eip.default1.public_ip}"
-  }
-
-  connection {
-    type = "ssh"
-    host = "${aws_eip.default1.public_ip}"
-    user = "root"
-    port = "22"
-    private_key = "${tls_private_key.jenkins.private_key_pem}"
-    agent = false
-  }
-  #depends_on = ["tls_private_key.jenkins"]
-  provisioner "local-exec" {
-    command = "sleep 250"
-  }
-provisioner "file" {
-    source      = "test.sh"
-    destination = "/home/centos/test.sh"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /home/centos/test.sh",
-      "sh /home/centos/test.sh ${var.build_number}"
-    ]
-  }
-depends_on = ["aws_instance.default"]
   }
