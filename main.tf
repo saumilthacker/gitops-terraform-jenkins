@@ -123,6 +123,17 @@ root_block_device = [
   depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
 }
 
+#Setting up Route 53
+resource "aws_route53_zone" "example" {
+  name = "www.moogsoft.me"
+}
+resource "aws_route53_record" "route" {
+  zone_id = "${aws_route53_zone.example.zone_id}"
+  name    = "route"
+  type    = "CNAME"
+  records = ["aws_lb.test.public_dns"]
+  ttl     = "300"
+}
 # Create Security Group for EC2
 resource "aws_security_group" "default" {
   name = "terraform-default-sg"
