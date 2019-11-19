@@ -1,5 +1,5 @@
 #!/bin/bash
-hostnamectl set-hostname www.moogsoft.me
+hostnamectl set-hostname staging.moogsoft.me
 echo '[nginx]' > /etc/yum.repos.d/nginx.repo
 echo 'name=nginx repo' >> /etc/yum.repos.d/nginx.repo
 echo 'baseurl=http://nginx.org/packages/OS/OSRELEASE/$basearch/' >> /etc/yum.repos.d/nginx.repo
