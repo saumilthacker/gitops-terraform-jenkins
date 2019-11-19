@@ -125,7 +125,7 @@ root_block_device = [
 
 #Setting up Route 53
 resource "aws_route53_zone" "example" {
-  name = "www.moogsoft.me"
+  name = "moogsoft.me"
 }
 resource "aws_route53_record" "route" {
   zone_id = "${aws_route53_zone.example.zone_id}"
