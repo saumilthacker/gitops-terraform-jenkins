@@ -131,7 +131,7 @@ resource "aws_route53_record" "route" {
   zone_id = "${aws_route53_zone.example.zone_id}"
   name    = "route"
   type    = "CNAME"
-  records = ["${aws_lb.test.public_dns}"]
+  records = "${aws_lb.test.public_dns}"
   ttl     = "300"
 }
 # Create Security Group for EC2
