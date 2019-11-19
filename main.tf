@@ -129,7 +129,7 @@ resource "aws_route53_zone" "example" {
 }
 resource "aws_route53_record" "route" {
   zone_id = "${aws_route53_zone.example.zone_id}"
-  name    = ""
+  name    = "staging"
   type    = "CNAME"
   records = ["${aws_lb.test.dns_name}"]
   ttl     = "300"
