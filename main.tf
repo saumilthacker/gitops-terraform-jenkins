@@ -59,7 +59,7 @@ resource "aws_route_table_association" "associate_to_subnet" {
 }
 # Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
-  domain   = "staging.moogsoft.me"
+  domain   = "*.moogsoft.com"
   types       = ["AMAZON_ISSUED"]
   most_recent = true
   }
@@ -125,7 +125,7 @@ root_block_device = [
 
 # Setting up Route 53
 resource "aws_route53_zone" "route" {
-  name = "moogsoft.me"
+  name = "moogsoft.com"
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
@@ -143,26 +143,19 @@ resource "aws_security_group" "default" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
   }
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0", "::/0"]
   }
   egress {
     from_port       = 0
     to_port         = 0
     protocol        = "-1"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = ["0.0.0.0/0", "::/0"]
   }
   }
 # Connection to instance via public ip
