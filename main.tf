@@ -26,7 +26,7 @@ resource "aws_eip" "default1" {
   instance = "${aws_instance.default.id}"
   vpc      = true
   }
- #Create vpc 
+ # Create vpc 
 resource "aws_vpc" "vpc" {
   cidr_block = "${var.cidr_vpc}"
   enable_dns_support   = true
@@ -40,7 +40,7 @@ resource "aws_subnet" "subnet_public" {
   map_public_ip_on_launch = "true"
   availability_zone = "${var.availability_zone}"
 }
-#Create internet gateway
+# Create internet gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = "${aws_vpc.vpc.id}"
 }
