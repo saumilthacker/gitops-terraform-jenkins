@@ -59,8 +59,9 @@ resource "aws_route_table_association" "associate_to_subnet" {
 }
 # Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
-  domain   = "*.moogsoft.com"
-  types       = ["AMAZON_ISSUED"]
+  domain   = "staging.moogsoft.me"
+  #types       = ["AMAZON_ISSUED"]
+  statuses = ["ISSUED"]
   most_recent = true
   }
 
@@ -125,7 +126,7 @@ root_block_device = [
 
 # Setting up Route 53
 resource "aws_route53_zone" "route" {
-  name = "moogsoft.com"
+  name = "moogsoft.me"
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
