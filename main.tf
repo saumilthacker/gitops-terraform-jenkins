@@ -192,8 +192,8 @@ provisioner "file" {
     inline = [
       "chmod +x /home/centos/test.sh",
       "sh /home/centos/test.sh ${var.build_number}",
-      "sudo sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
-      "sudo service sshd restart"
+      "sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config",
+      "service sshd restart"
     ]
   }
 depends_on = ["aws_instance.default"]
