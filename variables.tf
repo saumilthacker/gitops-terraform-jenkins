@@ -23,7 +23,7 @@ variable "build_number" {
 }
 variable "cidr_vpc" {
   description = "CIDR block for the VPC"
-  default = "10.0.0.0/16"
+  default = "10.12.0.0/16"
 }
 variable "cidr_subnet" {
   description = "CIDR block for the subnet"
