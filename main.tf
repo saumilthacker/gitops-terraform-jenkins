@@ -33,7 +33,7 @@ resource "aws_vpc" "vpc" {
   enable_dns_hostnames = true
 }
 
- #Create subnet
+ # Create subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id = "${aws_vpc.vpc.id}"
   cidr_block = "${var.cidr_subnet}"
