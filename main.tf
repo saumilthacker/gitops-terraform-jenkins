@@ -3,7 +3,7 @@ terraform {
   backend "s3" {
     bucket = "soumil-test-jenkins"
     key    = "terraform.tfstate"
-    region = "us-east-1"
+    region = "ap-east-1"
   }
 }
 
@@ -59,9 +59,9 @@ resource "aws_route_table_association" "associate_to_subnet" {
 }
 # Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
-  domain   = "staging.moogsoft.me"
-  #types       = ["AMAZON_ISSUED"]
-  statuses = ["ISSUED"]
+  domain   = "*.moogsoft.com"
+  types       = ["AMAZON_ISSUED"]
+  #statuses = ["ISSUED"]
   most_recent = true
   }
 
@@ -126,7 +126,7 @@ root_block_device = [
 
 # Setting up Route 53
 resource "aws_route53_zone" "route" {
-  name = "moogsoft.me"
+  name = "moogsoft.com"
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
