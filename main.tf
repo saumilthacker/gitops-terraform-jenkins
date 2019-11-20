@@ -60,7 +60,7 @@ resource "aws_route_table_association" "associate_to_subnet" {
 
 data "aws_acm_certificate" "fetch_certificate_arn" {
   domain   = "staging.moogsoft.me"
-  types       = ["ISSUED"]
+  statuses = ["ISSUED"]
   most_recent = true
   }
 
