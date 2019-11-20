@@ -52,12 +52,12 @@ route {
       gateway_id = "${aws_internet_gateway.igw.id}"
   }
 }
-
+# Route table association
 resource "aws_route_table_association" "associate_to_subnet" {
   subnet_id      = "${aws_subnet.subnet_public.id}"
   route_table_id = "${aws_route_table.rtb_public.id}"
 }
-
+# Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
   domain   = "staging.moogsoft.me"
   statuses = ["ISSUED"]
@@ -74,7 +74,7 @@ resource "aws_lb" "load" {
   }
   depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
   }
-#CREATING A TARGET GROUP FOR LOAD BALANCER.
+# Creating target group for lb
 resource "aws_lb_target_group" "target" {
   name     = "aws-targetgroup"
   port     = 443
@@ -82,13 +82,13 @@ resource "aws_lb_target_group" "target" {
   target_type = "instance"
   vpc_id   = "${aws_vpc.vpc.id}"
 }
-#ATTACHING THE PRIVATE HOSTS TO LOAD BALANCER'S TARGET GROUP.
+# Attaching target group to instance
 resource "aws_lb_target_group_attachment" "attach" {
   target_group_arn = "${aws_lb_target_group.target.arn}"
   target_id        = "${aws_instance.default.id}"
   port             = 443
 }
-#Attaching listner
+# Attaching listner
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = "${aws_lb.load.arn}"
   port              = "443"
@@ -110,7 +110,7 @@ resource "aws_instance" "default" {
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
   source_dest_check      = "false"
   instance_type          = "${var.instance_type}"
-  user_data = "${file("permit_root.sh")}"
+  user_data = "${file("permit_root.sh")}" # Enable rootlogin
 root_block_device = [
     {
       volume_type = "gp2"
@@ -123,10 +123,11 @@ root_block_device = [
   depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
 }
 
-#Setting up Route 53
+# Setting up Route 53
 resource "aws_route53_zone" "route" {
   name = "moogsoft.me"
 }
+# Setting route 53 record set
 resource "aws_route53_record" "routerec" {
   zone_id = "${aws_route53_zone.route.zone_id}"
   name    = "staging"
@@ -164,6 +165,7 @@ resource "aws_security_group" "default" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
   }
+# Connection to instance via public ip
 resource "null_resource" "Script_provisioner" {
   triggers {
     public_ip = "${aws_eip.default1.public_ip}"
@@ -177,10 +179,11 @@ resource "null_resource" "Script_provisioner" {
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
   }
-  #depends_on = ["tls_private_key.jenkins"]
+  
   provisioner "local-exec" {
     command = "sleep 250"
   }
+  # Executing shell script for installing moogsoft
 provisioner "file" {
     source      = "test.sh"
     destination = "/home/centos/test.sh"
