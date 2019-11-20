@@ -65,7 +65,7 @@ data "aws_acm_certificate" "fetch_certificate_arn" {
   }
 
 # Create network load balancer
-resource "aws_lb" "test" {
+resource "aws_lb" "load" {
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "network"
@@ -75,7 +75,7 @@ resource "aws_lb" "test" {
   depends_on = ["aws_instance.default","aws_vpc.vpc","aws_subnet.subnet_public"]
   }
 #CREATING A TARGET GROUP FOR LOAD BALANCER.
-resource "aws_lb_target_group" "test" {
+resource "aws_lb_target_group" "target" {
   name     = "aws-targetgroup"
   port     = 443
   protocol = "TLS"
@@ -83,20 +83,20 @@ resource "aws_lb_target_group" "test" {
   vpc_id   = "${aws_vpc.vpc.id}"
 }
 #ATTACHING THE PRIVATE HOSTS TO LOAD BALANCER'S TARGET GROUP.
-resource "aws_lb_target_group_attachment" "test" {
-  target_group_arn = "${aws_lb_target_group.test.arn}"
+resource "aws_lb_target_group_attachment" "attach" {
+  target_group_arn = "${aws_lb_target_group.target.arn}"
   target_id        = "${aws_instance.default.id}"
   port             = 443
 }
 #Attaching listner
 resource "aws_lb_listener" "front_end" {
-  load_balancer_arn = "${aws_lb.test.arn}"
+  load_balancer_arn = "${aws_lb.load.arn}"
   port              = "443"
   protocol          = "TLS"
   certificate_arn   = "${data.aws_acm_certificate.fetch_certificate_arn.arn}"
   default_action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.test.arn}"
+    target_group_arn = "${aws_lb_target_group.target.arn}"
   }
   
 }
@@ -124,14 +124,14 @@ root_block_device = [
 }
 
 #Setting up Route 53
-resource "aws_route53_zone" "example" {
+resource "aws_route53_zone" "route" {
   name = "moogsoft.me"
 }
-resource "aws_route53_record" "route" {
-  zone_id = "${aws_route53_zone.example.zone_id}"
+resource "aws_route53_record" "routerec" {
+  zone_id = "${aws_route53_zone.route.zone_id}"
   name    = "staging"
   type    = "CNAME"
-  records = ["${aws_lb.test.dns_name}"]
+  records = ["${aws_lb.load.dns_name}"]
   ttl     = "300"
 }
 # Create Security Group for EC2
