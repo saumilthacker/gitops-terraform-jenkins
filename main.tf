@@ -3,7 +3,7 @@ terraform {
   backend "s3" {
     bucket = "soumil-test-jenkins"
     key    = "terraform.tfstate"
-    region = "ap-east-1"
+    region = "us-east-1"
   }
 }
 
