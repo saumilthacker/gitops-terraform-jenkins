@@ -126,8 +126,7 @@ root_block_device = [
 
 # Setting up Route 53
 data "aws_route53_zone" "route" {
-  name         = "moogsoft.me"
-  private_zone = true
+  name   = "moogsoft.me"
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
