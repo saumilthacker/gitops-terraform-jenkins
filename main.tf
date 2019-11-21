@@ -55,9 +55,9 @@ resource "aws_route_table_association" "associate_to_subnet" {
 }
 # Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
-  domain   = "*.moogsoft.com"
-  types       = ["AMAZON_ISSUED"]
-  #statuses = ["ISSUED"]
+  domain   = "moogsoft.me"
+  #types       = ["AMAZON_ISSUED"]
+  statuses = ["ISSUED"]
   most_recent = true
   }
 # Create network load balancer
