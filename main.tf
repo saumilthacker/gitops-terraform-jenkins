@@ -3,20 +3,17 @@ terraform {
   backend "s3" {
     bucket = "soumil-test-jenkins"
     key    = "terraform.tfstate"
-    region = "us-east-1"
+    region = "ap-east-1"
   }
 }
-
 # Use AWS Terraform provider
 provider "aws" {
   region = "us-east-1"
 }
-
 resource "tls_private_key" "jenkins" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
-
 resource "aws_key_pair" "generated_key" {
   key_name   = "Jenkins-default"
   public_key = "${tls_private_key.jenkins.public_key_openssh}"
@@ -32,7 +29,6 @@ resource "aws_vpc" "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 }
-
  # Create subnet
 resource "aws_subnet" "subnet_public" {
   vpc_id = "${aws_vpc.vpc.id}"
@@ -59,12 +55,11 @@ resource "aws_route_table_association" "associate_to_subnet" {
 }
 # Fetching certificate for domain
 data "aws_acm_certificate" "fetch_certificate_arn" {
-  domain   = "moogsoft.me"
-  #types       = ["AMAZON_ISSUED"]
-  statuses = ["ISSUED"]
+  domain   = "*.moogsoft.com"
+  types       = ["AMAZON_ISSUED"]
+  #statuses = ["ISSUED"]
   most_recent = true
   }
-
 # Create network load balancer
 resource "aws_lb" "load" {
   name               = "test-lb-tf"
@@ -99,9 +94,7 @@ resource "aws_lb_listener" "front_end" {
     type             = "forward"
     target_group_arn = "${aws_lb_target_group.target.arn}"
   }
-  
 }
-
 # Create EC2 instance
 resource "aws_instance" "default" {
   ami                    = "${var.ami}"
@@ -123,16 +116,15 @@ root_block_device = [
   }
   depends_on = ["aws_instance.default", "aws_key_pair.generated_key"] 
 }
-
 # Setting up Route 53
-data "aws_route53_zone" "route" {
-  name   = "moogsoft.me"
+resource "aws_route53_zone" "route" {
+  name = "moogsoft.com"
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
-  zone_id = "${data.aws_route53_zone.route.zone_id}"
-  name    = "staging.${data.aws_route53_zone.route.name}"
-  type    = "A"
+  zone_id = "${aws_route53_zone.route.zone_id}"
+  name    = "staging"
+  type    = "CNAME"
   records = ["${aws_lb.load.dns_name}"]
   ttl     = "300"
 }
@@ -164,7 +156,6 @@ resource "aws_security_group" "default" {
     protocol    = "tcp"
     ipv6_cidr_blocks = ["::/0"]
   }
-
   ingress {
     from_port   = 443
     to_port     = 443
@@ -195,7 +186,6 @@ resource "null_resource" "Script_provisioner" {
   triggers {
     public_ip = "${aws_eip.default1.public_ip}"
   }
-
   connection {
     type = "ssh"
     host = "${aws_eip.default1.public_ip}"
@@ -204,7 +194,6 @@ resource "null_resource" "Script_provisioner" {
     private_key = "${tls_private_key.jenkins.private_key_pem}"
     agent = false
   }
-  
   provisioner "local-exec" {
     command = "sleep 250"
   }
