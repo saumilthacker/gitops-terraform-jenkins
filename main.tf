@@ -130,7 +130,7 @@ data "aws_route53_zone" "route" {
 }
 # Setting route 53 record set
 resource "aws_route53_record" "routerec" {
-  zone_id = "${aws_route53_zone.route.zone_id}"
+  zone_id = "${data.aws_route53_zone.route.zone_id}"
   name    = "staging.${data.aws_route53_zone.route.name}"
   type    = "A"
   records = ["${aws_lb.load.dns_name}"]
