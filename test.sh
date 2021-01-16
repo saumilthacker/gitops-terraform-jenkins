@@ -111,13 +111,13 @@ echo ""
 cat > /etc/yum.repos.d/aiops.repo << _EOF_
 [moogsoft-released-esr]
 name=moogsoft-aiops-latest
-baseurl=https://moogcrest:gDaJRrua_8_k@speedy.moogsoft.com/repo/aiops/esr
+baseurl=https://*****.moogsoft.com/repo/aiops/esr
 enabled=1
 gpgcheck=0
 sslverify=0
 [moogsoft-released-edge]
 name=moogsoft-aiops-latest
-baseurl=https://moogcrest:gDaJRrua_8_k@speedy.moogsoft.com/repo/aiops/edge
+baseurl=https://*****.moogsoft.com/repo/aiops/edge
 enabled=1
 gpgcheck=0
 sslverify=0 
@@ -188,7 +188,7 @@ echo ""
 cat > aiops_repo.sh << _EOF_
 #!/bin/bash
 clear
-curl -L -O https://moogcrest:gDaJRrua_8_k@speedy.moogsoft.com/repo/aiops/install_percona_nodes.sh 2>/dev/null
+curl -L -O https://*******/repo/aiops/install_percona_nodes.sh 2>/dev/null
 echo
 _EOF_
 bash aiops_repo.sh;
