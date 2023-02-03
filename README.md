@@ -38,7 +38,3 @@ terraform {
 * [GitHub Plugin](https://wiki.jenkins.io/display/JENKINS/GitHub+Plugin)
 * [Pipeline Plugin](https://wiki.jenkins.io/display/JENKINS/Pipeline+Plugin)
 * [CloudBees AWS Credentials Plugin](https://wiki.jenkins.io/display/JENKINS/CloudBees+AWS+Credentials+Plugin)
-
-## Questions?
-
-Open an issue.
